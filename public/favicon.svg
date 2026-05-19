@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Wall background -->
+  <rect width="32" height="32" fill="#f4ecdd"/>
+  <!-- Frame outer -->
+  <rect x="4" y="6" width="24" height="18" rx="1" fill="#5a3a22"/>
+  <!-- Frame inner brass -->
+  <rect x="6" y="8" width="20" height="14" rx="0.5" fill="#c9a84c"/>
+  <!-- Photo area -->
+  <rect x="7" y="9" width="18" height="12" fill="#c4a882"/>
+  <!-- Simplified people silhouettes -->
+  <ellipse cx="13" cy="14" rx="1.5" ry="2" fill="#8a6030" opacity="0.7"/>
+  <ellipse cx="16" cy="14" rx="1.5" ry="2" fill="#7a5020" opacity="0.7"/>
+  <ellipse cx="19" cy="14" rx="1.5" ry="2" fill="#8a6030" opacity="0.7"/>
+  <!-- Nameplate -->
+  <rect x="11" y="26" width="10" height="3" rx="0.5" fill="#c9a84c"/>
+</svg>

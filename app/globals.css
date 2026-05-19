@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+:root {
+  --wall: #f4ecdd;
+  --wall-dark: #e8dcc8;
+  --frame-outer: #5a3a22;
+  --frame-inner: #3d2410;
+  --frame-brass: #c9a84c;
+  --text-dark: #2b1d13;
+  --text-mid: #5c3d2a;
+  --button-bg: #7a2e2a;
+  --button-hover: #621f1b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--wall);
+  color: var(--text-dark);
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+/* Subtle linen/paper wall texture */
+.wall-texture {
+  background-color: var(--wall);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(180, 150, 110, 0.04) 2px,
+      rgba(180, 150, 110, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(180, 150, 110, 0.03) 3px,
+      rgba(180, 150, 110, 0.03) 6px
+    );
+}
+
+/* Soft vignette overlay */
+.vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(80, 50, 20, 0.25) 100%
+  );
+  z-index: 0;
+}
+
+/* Baseboard at the bottom */
+.baseboard {
+  background: linear-gradient(
+    to bottom,
+    #d4c4a8 0%,
+    #c8b590 40%,
+    #bfaa80 100%
+  );
+  border-top: 2px solid rgba(100, 70, 30, 0.3);
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Frame outer border — dark walnut look */
+.frame-outer {
+  background: linear-gradient(
+    145deg,
+    #7a5230 0%,
+    #5a3a22 30%,
+    #3d2410 60%,
+    #6b4828 85%,
+    #8a5f38 100%
+  );
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Brass nameplate */
+.nameplate {
+  background: linear-gradient(
+    to bottom,
+    #e8c96a 0%,
+    #c9a84c 35%,
+    #b8962e 65%,
+    #d4b050 100%
+  );
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.08em;
+  font-family: "Georgia", serif;
+  font-style: italic;
+}
+
+/* Crack overlay on top of photo */
+.crack-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* "Do not touch" sticky note */
+.sticky-note {
+  background: #f5f0c8;
+  border: 1px solid rgba(180, 160, 60, 0.4);
+  box-shadow:
+    2px 3px 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 220, 0.6);
+  font-family: "Georgia", serif;
+  transform: rotate(3deg);
+}
+
+/* Upload button */
+.upload-btn {
+  background-color: var(--button-bg);
+  color: #fff;
+  font-family: "Georgia", serif;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.upload-btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+.upload-btn:active {
+  transform: translateY(0);
+}
+
+/* Focus ring for keyboard users */
+.frame-button:focus-visible {
+  outline: 3px solid #c9a84c;
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
