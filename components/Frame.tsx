@@ -16,20 +16,7 @@ interface Props {
   onReveal: () => void;
 }
 
-// Aspect ratio of the gold-frame.png asset (588 × 433)
-const FRAME_RATIO = 433 / 588;
-
-// Approximate inset of the transparent photo window inside the frame,
-// expressed as a percentage of the total frame dimensions.
-// Matches the values used in scripts/make-frame.mjs.
-const PHOTO_INSET = {
-  top:    "13.4%",
-  left:   "8.8%",
-  right:  "8.7%",
-  bottom: "13.6%",
-};
-
-const EASE_GRAVITY: Easing = [0.55, 0.055, 0.675, 0.19]; // strong ease-in
+const EASE_GRAVITY: Easing = [0.55, 0.055, 0.675, 0.19];
 
 export default function Frame({ onReveal }: Props) {
   const prefersReducedMotion = useReducedMotion();
@@ -47,7 +34,7 @@ export default function Frame({ onReveal }: Props) {
       return;
     }
 
-    // --- Wobble: frame shakes as the nail starts to give out ---
+    // --- Wobble: nail starts to give ---
     setState("wobble");
     await controls.start({
       rotate: [-2, 5, -6, 4, -3, 0] as number[],
@@ -60,13 +47,13 @@ export default function Frame({ onReveal }: Props) {
       },
     });
 
-    // --- Fall: accelerates off the bottom of the screen ---
+    // --- Fall: accelerates entirely off the bottom of the screen ---
     setState("fall");
     await controls.start({
       rotate: [0, 10, -5, 22, -8, 30] as number[],
       x: [0, 12, -10, 24, -6, 30] as number[],
       y: [0, 60, 160, 320, 520, 900] as number[],
-      opacity: [1, 1, 1, 1, 0.6, 0] as number[],
+      opacity: [1, 1, 1, 1, 0.5, 0] as number[],
       transition: {
         duration: 1.0,
         ease: EASE_GRAVITY,
@@ -74,7 +61,6 @@ export default function Frame({ onReveal }: Props) {
       },
     });
 
-    // Frame is now invisible; swap it out and reveal upload
     setState("gone");
     onReveal();
   };
@@ -97,7 +83,7 @@ export default function Frame({ onReveal }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Frame wrapper — only rendered until fallen */}
+      {/* Frame — removed from DOM once fallen */}
       {state !== "gone" && (
         <motion.button
           className="frame-button relative cursor-pointer focus:outline-none select-none"
@@ -109,55 +95,46 @@ export default function Frame({ onReveal }: Props) {
           tabIndex={0}
           style={{ touchAction: "manipulation" }}
         >
-          {/* Outer sizing container — proportional to the frame asset */}
-          <div
-            className="gold-frame-container"
-            style={{
-              // Max 520px wide on desktop, shrinks on mobile
-              width: "min(82vw, 520px)",
-              aspectRatio: "588 / 433",
-              position: "relative",
-            }}
-          >
-            {/* Family photo — fills the container, visible through the frame's transparent window */}
+          {/* Outer wooden frame */}
+          <div className="frame-outer rounded-sm p-[14px] sm:p-[18px]">
+            {/* Brass inner mat border */}
             <div
+              className="p-[3px] sm:p-[4px]"
               style={{
-                position: "absolute",
-                top: PHOTO_INSET.top,
-                left: PHOTO_INSET.left,
-                right: PHOTO_INSET.right,
-                bottom: PHOTO_INSET.bottom,
-                overflow: "hidden",
+                background: "linear-gradient(135deg, #d4aa50, #b8922a, #d4aa50)",
               }}
             >
-              <Image
-                src="/family.png"
-                alt="Griswold family photo in a gold frame"
-                fill
-                style={{ objectFit: "cover", objectPosition: "center top" }}
-                priority
-                draggable={false}
-              />
+              {/* Photo */}
+              <div
+                className="relative overflow-hidden"
+                style={{ width: "min(72vw, 480px)", height: "min(48vw, 320px)" }}
+              >
+                <Image
+                  src="/family.png"
+                  alt="Griswold family photo in a wooden frame"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "center top" }}
+                  priority
+                  draggable={false}
+                />
+                {/* Subtle glass glare */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 50%)",
+                  }}
+                />
+              </div>
             </div>
-
-            {/* Gold frame overlay — transparent center window shows photo beneath */}
-            <Image
-              src="/gold-frame.png"
-              alt=""
-              aria-hidden="true"
-              fill
-              style={{ objectFit: "fill", pointerEvents: "none" }}
-              draggable={false}
-              priority
-            />
           </div>
 
-          {/* Brass nameplate below frame */}
+          {/* Brass nameplate */}
           <div className="nameplate mt-3 mx-auto px-5 py-1.5 text-xs sm:text-sm text-amber-950 text-center w-fit rounded-sm">
             The Griswolds
           </div>
 
-          {/* Nail dot — visible only in idle state */}
+          {/* Nail dot */}
           {state === "idle" && (
             <div
               className="absolute -top-3 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full"
@@ -171,7 +148,7 @@ export default function Frame({ onReveal }: Props) {
         </motion.button>
       )}
 
-      {/* Click prompt — fades out once clicked */}
+      {/* Click prompt */}
       <AnimatePresence>
         {state === "idle" && (
           <motion.p
