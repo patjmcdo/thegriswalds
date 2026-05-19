@@ -10,19 +10,19 @@ export default function Home() {
 
   return (
     <main
-      className="wall-texture vignette relative min-h-screen flex flex-col"
+      className="wall-texture vignette relative min-h-screen flex flex-col overflow-x-hidden"
       style={{ minHeight: "100dvh" }}
     >
-      {/* Page content — centered column */}
-      <div className="relative z-10 flex flex-col items-center flex-1 px-4 pb-0">
-        {/* Header */}
+      <div className="relative z-10 flex flex-col items-center flex-1 px-4">
+
+        {/* Page headline — hidden after reveal */}
         <AnimatePresence>
           {!revealed && (
             <motion.header
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
               className="text-center pt-10 pb-6 sm:pt-14 sm:pb-8"
             >
               <h1
@@ -35,7 +35,11 @@ export default function Home() {
               </h1>
               <p
                 className="mt-3 text-base sm:text-lg max-w-sm mx-auto"
-                style={{ color: "#5c3d2a", fontFamily: "Georgia, serif", fontStyle: "italic" }}
+                style={{
+                  color: "#5c3d2a",
+                  fontFamily: "Georgia, serif",
+                  fontStyle: "italic",
+                }}
               >
                 We&apos;re collecting family photos, old memories,
                 <br className="hidden sm:block" />
@@ -45,18 +49,22 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* Post-reveal compact header */}
+        {/* Compact title shown after reveal */}
         <AnimatePresence>
           {revealed && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
               className="text-center pt-6 pb-2"
             >
               <p
                 className="text-sm"
-                style={{ color: "#a07850", fontFamily: "Georgia, serif", fontStyle: "italic" }}
+                style={{
+                  color: "#a07850",
+                  fontFamily: "Georgia, serif",
+                  fontStyle: "italic",
+                }}
               >
                 The Griswold Family Photo Archive
               </p>
@@ -64,30 +72,36 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* Frame — always visible, just settles down after animation */}
-        <div
-          className="relative"
-          style={{
-            marginTop: revealed ? "0" : "0",
-            paddingBottom: revealed ? "340px" : "20px",
-            transition: "padding-bottom 0.3s ease",
-          }}
-        >
-          <Frame onReveal={() => setRevealed(true)} />
-        </div>
-
-        {/* Upload section — appears after frame falls */}
-        <AnimatePresence>
-          {revealed && (
-            <div className="w-full max-w-lg">
-              <UploadSection />
+        {/*
+          Shared slot: the frame lives here until it falls, then the upload
+          section takes its place. Both share the same flow position so there's
+          no jump in layout.
+        */}
+        <div className="w-full flex flex-col items-center">
+          {/* Frame is absolutely removed from the DOM once it's gone */}
+          {!revealed && (
+            <div className="pt-4 pb-6">
+              <Frame onReveal={() => setRevealed(true)} />
             </div>
           )}
-        </AnimatePresence>
+
+          {/* Upload section slides in where the frame was */}
+          <AnimatePresence>
+            {revealed && (
+              <div className="w-full max-w-lg">
+                <UploadSection />
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+
       </div>
 
-      {/* Baseboard at bottom of page */}
-      <div className="baseboard relative z-10 w-full h-10 sm:h-14 mt-auto" aria-hidden="true" />
+      {/* Baseboard at bottom */}
+      <div
+        className="baseboard relative z-10 w-full h-10 sm:h-14 mt-auto"
+        aria-hidden="true"
+      />
     </main>
   );
 }
