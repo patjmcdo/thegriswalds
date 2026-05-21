@@ -139,6 +139,62 @@ body {
   border-radius: 4px;
 }
 
+/* Microphone record button */
+.mic-btn {
+  background-color: var(--button-bg);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.mic-btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+.stop-btn {
+  background-color: #7a2e2a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(122, 46, 42, 0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(122, 46, 42, 0); }
+}
+
+.recording-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7a2e2a;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Form inputs on memories page */
+.memories-input {
+  background: rgba(255, 250, 240, 0.7);
+  border: 1px solid rgba(122, 90, 58, 0.3);
+  color: var(--text-dark);
+  font-family: "Georgia", serif;
+  font-size: 1rem;
+}
+
+.memories-input:focus {
+  outline: none;
+  border-color: #c9a84c;
+  background: rgba(255, 250, 240, 0.95);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
